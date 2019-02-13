@@ -33,8 +33,22 @@ console.log('GET route was hit');
 });//end .catch
 });//end .get
 
+app.post('/food', (req,res)=>{
+let newFood = req.body;
+console.log('new food is:', newFood);
+    pool.query(`INSERT INTO "restraunts"("name", "type") VALUES($1, $2);`,
+        [newFood.name, newFood.type]).then(() => {
+            res.sendStatus(201);
+});//end .post
+});
 
+app.delete('/food', (req,res)=>{
+    console.log('in delete');
+    pool.query(`DELETE FROM "restraunts" WHERE ("id"=${req.body.id}`).then(()=>{
+        res.sendStatus(200);
+    })
+})
 
 app.listen(PORT, ()=>{
 console.log('listening on port:', PORT);
-});
+})
