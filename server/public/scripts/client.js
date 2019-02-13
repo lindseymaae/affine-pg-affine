@@ -9,17 +9,17 @@ function onReady() {
 
 function getFood() {
     $.ajax({
-        url: '/food',
+        url: '/restaurant',
         method: 'GET'
     }).then(function (response) {
         console.log(response);
         
         for (let i = 0; i < response.length; i++) {
             let food = response[i];
-            $('#tableBody').append(`<tr data-id=${response[i].id}>
-                <td>${response[i].name}</td>
-                <td>${response[i].type}</td>
-                <td><button class="deleteButton">Delete</button></td>
+            $('#tableBody').append(`<tr >
+                <td>${food.name}</td>
+                <td>${food.type}</td>
+                <td><button class="deleteButton" data-id=${food.id}>Delete</button></td>
             </tr>
             `)
         }//end for loop
@@ -28,7 +28,7 @@ function getFood() {
 
 function addFood() {
     $.ajax({
-        url: '/food',
+        url: '/restaurant',
         method: 'POST',
         data: {
             name: $('.nameInput').val(),
@@ -45,12 +45,13 @@ function addFood() {
 
 function deleteFood (){
     console.log('delete button was clicked');
+    console.log($(this).data().id);
+    
     $.ajax({
-        url: '/food',
-        method: 'DELETE',
-        data: $(this).closest('tr').data().id,
-    }).then(function( response ){
-        console.log( response );
-        
-    })
+        url: '/restaurant/' + $(this).data().id,
+        method: 'DELETE'
+    }).then(function( ){
+        $('#tableBody').empty();
+        getFood();
+    });
 }
