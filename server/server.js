@@ -22,15 +22,19 @@ pool.on('error', (error) => {
     console.log('Error with postgres pool', error);
 });
 
-app.get('/books', ( req,res )=>{
+app.get('/food', ( req, res )=>{
 console.log('GET route was hit');
-pool.query('SELECT * FROM "restraunts')
-.then((result)=>{
-    res.send(results.rows)
-})
-})
+    pool.query('SELECT * FROM "restraunts"')
+.then( (results) => {
+    res.send(results.rows);
+}).catch((error) => {
+    console.log('error with books select', error);
+    res.sendStatus(500);
+});//end .catch
+});//end .get
+
 
 
 app.listen(PORT, ()=>{
 console.log('listening on port:', PORT);
-})
+});
